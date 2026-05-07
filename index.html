@@ -42,7 +42,6 @@
 
     .app { max-width: 480px; margin: 0 auto; padding: 0 0 90px; }
 
-    /* ── Header ── */
     .header {
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
       padding: 48px 20px 28px;
@@ -88,7 +87,6 @@
     .daily-big label { font-size: 12px; opacity: .8; }
     .daily-big .val { font-size: 28px; font-weight: 900; }
 
-    /* ── Nav tabs ── */
     .tabs {
       display: flex;
       background: var(--surface);
@@ -111,7 +109,6 @@
     }
     .tab.active { background: var(--primary); color: #fff; }
 
-    /* ── Sections ── */
     .section { padding: 18px 16px 0; display: none; }
     .section.active { display: block; }
 
@@ -134,7 +131,6 @@
     }
     .card-title span { font-size: 14px; }
 
-    /* ── Input rows ── */
     .row {
       display: flex;
       align-items: center;
@@ -163,7 +159,6 @@
     .row input[type=number]::-webkit-inner-spin-button,
     .row input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
-    /* ── Summary rows ── */
     .sum-row {
       display: flex;
       justify-content: space-between;
@@ -189,7 +184,6 @@
     .sum-total-bar .label { font-size: 13px; font-weight: 700; }
     .sum-total-bar .amount { font-size: 20px; font-weight: 900; }
 
-    /* ── Fuel gauge ── */
     .fuel-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -231,7 +225,6 @@
       cursor: pointer;
     }
 
-    /* Progress bar */
     .progress-wrap { margin-top: 10px; }
     .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
     .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
@@ -242,7 +235,6 @@
       transition: width .4s ease, background .3s;
     }
 
-    /* ── Savings ── */
     .savings-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -289,7 +281,6 @@
     }
     .tip-box strong { color: var(--primary-light); }
 
-    /* ── Bottom bar ── */
     .bottom-bar {
       position: fixed;
       bottom: 0; left: 50%;
@@ -321,22 +312,9 @@
     .bottom-btn.active { color: var(--primary-light); }
     .bottom-btn svg { width: 22px; height: 22px; }
 
-    /* ── Misc ── */
     .green { color: var(--success); }
     .yellow { color: var(--warning); }
     .red { color: var(--danger); }
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 8px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-    .chip.green { background: rgba(16,185,129,.15); color: var(--success); }
-    .chip.yellow { background: rgba(245,158,11,.15); color: var(--warning); }
-    .chip.red { background: rgba(239,68,68,.15); color: var(--danger); }
 
     @media (prefers-color-scheme: light) {
       :root {
@@ -354,7 +332,6 @@
 <body>
 <div class="app">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="header-title">Mon Budget</div>
     <div class="header-month" id="headerMonth"></div>
@@ -379,72 +356,33 @@
     </div>
   </div>
 
-  <!-- TABS -->
   <div class="tabs">
     <button class="tab active" onclick="switchTab('overview', this)">Tableau de bord</button>
     <button class="tab" onclick="switchTab('inputs', this)">Saisie</button>
     <button class="tab" onclick="switchTab('savings', this)">Épargne</button>
   </div>
 
-  <!-- ═══ TAB: OVERVIEW ═══ -->
   <div class="section active" id="tab-overview">
-
     <div class="card">
       <div class="card-title"><span>📊</span> Résumé mensuel</div>
-      <div class="sum-row">
-        <span class="label">Salaire</span>
-        <span class="amount green" id="ov-salaire">—</span>
-      </div>
-      <div class="sum-row">
-        <span class="label">Prime d'activité</span>
-        <span class="amount green" id="ov-prime">—</span>
-      </div>
-      <div class="sum-row total">
-        <span class="label">Total revenus</span>
-        <span class="amount green" id="ov-revenu">—</span>
-      </div>
+      <div class="sum-row"><span class="label">Salaire</span><span class="amount green" id="ov-salaire">—</span></div>
+      <div class="sum-row"><span class="label">Prime d'activité</span><span class="amount green" id="ov-prime">—</span></div>
+      <div class="sum-row total"><span class="label">Total revenus</span><span class="amount green" id="ov-revenu">—</span></div>
       <div style="height:10px"></div>
-      <div class="sum-row">
-        <span class="label">Crédit auto</span>
-        <span class="amount red" id="ov-credit">—</span>
-      </div>
-      <div class="sum-row">
-        <span class="label">Assurance</span>
-        <span class="amount red" id="ov-assurance">—</span>
-      </div>
-      <div class="sum-row">
-        <span class="label">Carburant estimé</span>
-        <span class="amount red" id="ov-fuel">—</span>
-      </div>
-      <div class="sum-row total">
-        <span class="label">Total charges</span>
-        <span class="amount red" id="ov-charges">—</span>
-      </div>
-      <div class="sum-total-bar">
-        <span class="label">💰 Reste à vivre</span>
-        <span class="amount" id="ov-reste">—</span>
-      </div>
+      <div class="sum-row"><span class="label">Crédit auto</span><span class="amount red" id="ov-credit">—</span></div>
+      <div class="sum-row"><span class="label">Assurance</span><span class="amount red" id="ov-assurance">—</span></div>
+      <div class="sum-row"><span class="label">Carburant estimé</span><span class="amount red" id="ov-fuel">—</span></div>
+      <div class="sum-row total"><span class="label">Total charges</span><span class="amount red" id="ov-charges">—</span></div>
+      <div class="sum-total-bar"><span class="label">💰 Reste à vivre</span><span class="amount" id="ov-reste">—</span></div>
     </div>
 
     <div class="card">
       <div class="card-title"><span>📅</span> Budget journalier</div>
-      <div class="sum-row">
-        <span class="label">Jours restants ce mois</span>
-        <span class="amount" id="ov-daysLeft">—</span>
-      </div>
-      <div class="sum-row">
-        <span class="label">Budget / jour (mois complet)</span>
-        <span class="amount" id="ov-dailyFull">—</span>
-      </div>
-      <div class="sum-row total">
-        <span class="label">Budget / jour (jours restants)</span>
-        <span class="amount" id="ov-dailyLeft">—</span>
-      </div>
+      <div class="sum-row"><span class="label">Jours restants ce mois</span><span class="amount" id="ov-daysLeft">—</span></div>
+      <div class="sum-row"><span class="label">Budget / jour (mois complet)</span><span class="amount" id="ov-dailyFull">—</span></div>
+      <div class="sum-row total"><span class="label">Budget / jour (jours restants)</span><span class="amount" id="ov-dailyLeft">—</span></div>
       <div class="progress-wrap" style="margin-top:14px">
-        <div class="progress-label">
-          <span>Mois écoulé</span>
-          <span id="ov-monthPct">—</span>
-        </div>
+        <div class="progress-label"><span>Mois écoulé</span><span id="ov-monthPct">—</span></div>
         <div class="progress-bar"><div class="progress-fill" id="ov-monthBar" style="width:0%"></div></div>
       </div>
     </div>
@@ -452,189 +390,63 @@
     <div class="card">
       <div class="card-title"><span>⛽</span> Jauge carburant</div>
       <div class="fuel-grid">
-        <div class="fuel-stat">
-          <label>Budget carb.</label>
-          <div class="val" id="fuel-budget">—</div>
-        </div>
-        <div class="fuel-stat">
-          <label>Consommé</label>
-          <div class="val red" id="fuel-spent">—</div>
-        </div>
-        <div class="fuel-stat">
-          <label>Restant</label>
-          <div class="val green" id="fuel-left">—</div>
-        </div>
-        <div class="fuel-stat">
-          <label>Pleins restants</label>
-          <div class="val yellow" id="fuel-fills">—</div>
-        </div>
+        <div class="fuel-stat"><label>Budget carb.</label><div class="val" id="fuel-budget">—</div></div>
+        <div class="fuel-stat"><label>Consommé</label><div class="val red" id="fuel-spent">—</div></div>
+        <div class="fuel-stat"><label>Restant</label><div class="val green" id="fuel-left">—</div></div>
+        <div class="fuel-stat"><label>Pleins restants</label><div class="val yellow" id="fuel-fills">—</div></div>
       </div>
       <div class="progress-wrap">
-        <div class="progress-label">
-          <span>Carburant utilisé</span>
-          <span id="fuel-pct">0 %</span>
-        </div>
+        <div class="progress-label"><span>Carburant utilisé</span><span id="fuel-pct">0 %</span></div>
         <div class="progress-bar"><div class="progress-fill" id="fuel-bar" style="width:0%"></div></div>
       </div>
       <div class="slider-wrap">
-        <div class="slider-label">
-          <span>Carburant dépensé ce mois</span>
-          <span id="fuel-slider-val">0 €</span>
-        </div>
+        <div class="slider-label"><span>Carburant dépensé ce mois</span><span id="fuel-slider-val">0 €</span></div>
         <input type="range" id="fuelSlider" min="0" max="300" step="5" value="0" oninput="onFuelSlider(this.value)">
       </div>
     </div>
-
   </div>
 
-  <!-- ═══ TAB: INPUTS ═══ -->
   <div class="section" id="tab-inputs">
-
     <div class="card">
       <div class="card-title"><span>💚</span> Revenus mensuels</div>
-      <div class="row">
-        <div>
-          <div class="row-label">Salaire net</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-salaire" value="1528" min="0" step="1" oninput="save();compute()">
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <div class="row-label">Prime d'activité</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-prime" value="131" min="0" step="1" oninput="save();compute()">
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <div class="row-label">Autre revenu</div>
-          <div class="row-sub">ex: freelance, aide…</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-other-in" value="0" min="0" step="1" oninput="save();compute()">
-        </div>
-      </div>
+      <div class="row"><div><div class="row-label">Salaire net</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-salaire" value="1528" min="0" step="1" oninput="save();compute()"></div></div>
+      <div class="row"><div><div class="row-label">Prime d'activité</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-prime" value="131" min="0" step="1" oninput="save();compute()"></div></div>
+      <div class="row"><div><div class="row-label">Autre revenu</div><div class="row-sub">ex: freelance, aide…</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-other-in" value="0" min="0" step="1" oninput="save();compute()"></div></div>
     </div>
-
     <div class="card">
       <div class="card-title"><span>🔴</span> Dépenses fixes</div>
-      <div class="row">
-        <div>
-          <div class="row-label">Crédit auto</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-credit" value="293" min="0" step="1" oninput="save();compute()">
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <div class="row-label">Assurance</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-assurance" value="107" min="0" step="1" oninput="save();compute()">
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <div class="row-label">Loyer</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-loyer" value="0" min="0" step="1" oninput="save();compute()">
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <div class="row-label">Autre charge fixe</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-other-out" value="0" min="0" step="1" oninput="save();compute()">
-        </div>
-      </div>
+      <div class="row"><div><div class="row-label">Crédit auto</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-credit" value="293" min="0" step="1" oninput="save();compute()"></div></div>
+      <div class="row"><div><div class="row-label">Assurance</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-assurance" value="107" min="0" step="1" oninput="save();compute()"></div></div>
+      <div class="row"><div><div class="row-label">Loyer</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-loyer" value="0" min="0" step="1" oninput="save();compute()"></div></div>
+      <div class="row"><div><div class="row-label">Autre charge fixe</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-other-out" value="0" min="0" step="1" oninput="save();compute()"></div></div>
     </div>
-
     <div class="card">
       <div class="card-title"><span>⛽</span> Budget carburant mensuel</div>
-      <div class="row">
-        <div>
-          <div class="row-label">Enveloppe carburant</div>
-          <div class="row-sub">Plein = ~50 € en moyenne</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-fuel-budget" value="100" min="0" step="5" oninput="save();compute()">
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <div class="row-label">Coût d'un plein</div>
-        </div>
-        <div class="row-input-wrap">
-          <span class="currency">€</span>
-          <input type="number" id="i-fuel-fill" value="50" min="1" step="1" oninput="save();compute()">
-        </div>
-      </div>
+      <div class="row"><div><div class="row-label">Enveloppe carburant</div><div class="row-sub">Plein = ~50 € en moyenne</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-fuel-budget" value="100" min="0" step="5" oninput="save();compute()"></div></div>
+      <div class="row"><div><div class="row-label">Coût d'un plein</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-fuel-fill" value="50" min="1" step="1" oninput="save();compute()"></div></div>
     </div>
-
   </div>
 
-  <!-- ═══ TAB: SAVINGS ═══ -->
   <div class="section" id="tab-savings">
-
     <div class="card">
       <div class="card-title"><span>🎯</span> Objectif d'épargne</div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">
-        Sans loyer, tu as une belle capacité d'épargne. Choisis un taux&nbsp;:
-      </p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">Sans loyer, tu as une belle capacité d'épargne. Choisis un taux&nbsp;:</p>
       <div class="savings-grid">
-        <div class="savings-pill" id="pill-15" onclick="selectSavings(15)">
-          <div class="pct">15 %</div>
-          <div class="lbl">Prudent</div>
-        </div>
-        <div class="savings-pill active" id="pill-20" onclick="selectSavings(20)">
-          <div class="pct">20 %</div>
-          <div class="lbl">Sain ✓</div>
-        </div>
-        <div class="savings-pill" id="pill-30" onclick="selectSavings(30)">
-          <div class="pct">30 %</div>
-          <div class="lbl">Ambitieux</div>
-        </div>
+        <div class="savings-pill" id="pill-15" onclick="selectSavings(15)"><div class="pct">15 %</div><div class="lbl">Prudent</div></div>
+        <div class="savings-pill active" id="pill-20" onclick="selectSavings(20)"><div class="pct">20 %</div><div class="lbl">Sain ✓</div></div>
+        <div class="savings-pill" id="pill-30" onclick="selectSavings(30)"><div class="pct">30 %</div><div class="lbl">Ambitieux</div></div>
       </div>
-
       <div class="savings-result">
-        <div class="savings-box">
-          <label>Épargne / mois</label>
-          <div class="val green" id="sv-month">—</div>
-        </div>
-        <div class="savings-box">
-          <label>Reste après épargne</label>
-          <div class="val yellow" id="sv-after">—</div>
-        </div>
-        <div class="savings-box">
-          <label>Épargne / an</label>
-          <div class="val green" id="sv-year">—</div>
-        </div>
-        <div class="savings-box">
-          <label>Budget / jour net</label>
-          <div class="val yellow" id="sv-daily">—</div>
-        </div>
+        <div class="savings-box"><label>Épargne / mois</label><div class="val green" id="sv-month">—</div></div>
+        <div class="savings-box"><label>Reste après épargne</label><div class="val yellow" id="sv-after">—</div></div>
+        <div class="savings-box"><label>Épargne / an</label><div class="val green" id="sv-year">—</div></div>
+        <div class="savings-box"><label>Budget / jour net</label><div class="val yellow" id="sv-daily">—</div></div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title"><span>💡</span> Conseil personnalisé</div>
       <div class="tip-box" id="tip-box">Chargement…</div>
     </div>
-
     <div class="card">
       <div class="card-title"><span>📈</span> Projection épargne</div>
       <div class="sum-row"><span class="label">Dans 3 mois</span><span class="amount green" id="sv-3m">—</span></div>
@@ -642,12 +454,10 @@
       <div class="sum-row"><span class="label">Dans 1 an</span><span class="amount green" id="sv-1y">—</span></div>
       <div class="sum-row"><span class="label">Dans 2 ans</span><span class="amount green" id="sv-2y">—</span></div>
     </div>
-
   </div>
 
 </div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-bar">
   <button class="bottom-btn active" id="nav-overview" onclick="switchTab('overview', this, true)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -672,7 +482,6 @@
 </div>
 
 <script>
-// ── State ──────────────────────────────────────────────────────────────────
 let state = {
   salaire: 1528, prime: 131, otherIn: 0,
   credit: 293, assurance: 107, loyer: 0, otherOut: 0,
@@ -680,7 +489,6 @@ let state = {
   savingsPct: 20
 };
 
-// ── Persistence ────────────────────────────────────────────────────────────
 function save() {
   const s = { ...state };
   ['salaire','prime','otherIn','credit','assurance','loyer','otherOut','fuelBudget','fuelFill'].forEach(k => {
@@ -698,7 +506,6 @@ function load() {
     const raw = localStorage.getItem('budgetState');
     if (raw) Object.assign(state, JSON.parse(raw));
   } catch(e) {}
-  // Fill inputs
   const map = { salaire:'i-salaire', prime:'i-prime', otherIn:'i-other-in',
     credit:'i-credit', assurance:'i-assurance', loyer:'i-loyer', otherOut:'i-other-out',
     fuelBudget:'i-fuel-budget', fuelFill:'i-fuel-fill' };
@@ -713,7 +520,6 @@ function load() {
   selectSavings(state.savingsPct, false);
 }
 
-// ── Compute ────────────────────────────────────────────────────────────────
 function fmt(n) {
   return n.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €';
 }
@@ -723,15 +529,11 @@ function fmtDec(n) {
 function colorClass(n) { return n >= 0 ? (n > 200 ? 'green' : 'yellow') : 'red'; }
 
 function compute() {
-  // Pull latest from inputs
   save();
-
   const revenu   = state.salaire + state.prime + state.otherIn;
   const fixedOut = state.credit + state.assurance + state.loyer + state.otherOut;
   const charges  = fixedOut + state.fuelBudget;
   const reste    = revenu - charges;
-
-  // Date info
   const now      = new Date();
   const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   const dayOfMonth  = now.getDate();
@@ -739,30 +541,23 @@ function compute() {
   const monthPct    = Math.round((dayOfMonth / daysInMonth) * 100);
   const dailyFull   = reste / daysInMonth;
   const dailyLeft   = reste / daysLeft;
-
-  // Fuel
   const fuelLeft   = state.fuelBudget - state.fuelSpent;
   const fuelPct    = state.fuelBudget > 0 ? Math.min(100, Math.round((state.fuelSpent / state.fuelBudget) * 100)) : 0;
   const fillsLeft  = state.fuelFill > 0 ? (fuelLeft / state.fuelFill).toFixed(1) : '—';
-
-  // Savings
   const svPct      = state.savingsPct / 100;
   const svMonth    = revenu * svPct;
   const svAfter    = reste - svMonth;
   const svYear     = svMonth * 12;
   const svDaily    = Math.max(0, svAfter) / daysInMonth;
 
-  // ── Update DOM ──────────────────────────────────────────────────────────
   const month = now.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
   document.getElementById('headerMonth').textContent = month.charAt(0).toUpperCase() + month.slice(1);
 
-  // Header
   set('hRevenu',  fmt(revenu),  colorClass(revenu));
   set('hCharges', fmt(charges), 'red');
   set('hDaily',   fmtDec(dailyLeft), colorClass(dailyLeft));
   document.getElementById('hDailySub').textContent = daysLeft + ' jours restants';
 
-  // Overview
   set('ov-salaire',   fmt(state.salaire),   'green');
   set('ov-prime',     fmt(state.prime),     'green');
   set('ov-revenu',    fmt(revenu),           'green');
@@ -779,7 +574,6 @@ function compute() {
   bar.style.width = monthPct + '%';
   bar.style.background = monthPct > 80 ? '#ef4444' : monthPct > 50 ? '#f59e0b' : '#10b981';
 
-  // Fuel
   setText('fuel-budget', fmt(state.fuelBudget));
   set('fuel-spent', fmt(state.fuelSpent), 'red');
   set('fuel-left',  fmt(fuelLeft), fuelLeft >= 0 ? 'green' : 'red');
@@ -789,7 +583,6 @@ function compute() {
   fbar.style.width = fuelPct + '%';
   fbar.style.background = fuelPct > 90 ? '#ef4444' : fuelPct > 60 ? '#f59e0b' : '#10b981';
 
-  // Savings
   set('sv-month', fmt(svMonth),   'green');
   set('sv-after', fmt(svAfter),   'yellow');
   set('sv-year',  fmt(svYear),    'green');
@@ -799,7 +592,6 @@ function compute() {
   set('sv-1y', fmt(svYear),       'green');
   set('sv-2y', fmt(svYear * 2),   'green');
 
-  // Tip
   updateTip(reste, svMonth, svAfter, revenu);
 }
 
@@ -817,24 +609,17 @@ function setText(id, text) {
 function updateTip(reste, svMonth, svAfter, revenu) {
   const pct = state.savingsPct;
   let tips = [];
-
-  if (state.loyer === 0) {
-    tips.push(`<strong>Avantage sans loyer :</strong> tu économises en moyenne 600-800 €/mois par rapport à un locataire. C'est un levier énorme pour te constituer un capital.`);
-  }
-  if (pct >= 20) {
-    tips.push(`<strong>Taux ${pct} % :</strong> excellent choix. L'objectif "50/30/20" recommande exactement 20 % en épargne.`);
-  }
+  if (state.loyer === 0) tips.push(`<strong>Avantage sans loyer :</strong> tu économises en moyenne 600-800 €/mois par rapport à un locataire. C'est un levier énorme pour te constituer un capital.`);
+  if (pct >= 20) tips.push(`<strong>Taux ${pct} % :</strong> excellent choix. L'objectif "50/30/20" recommande exactement 20 % en épargne.`);
   if (svMonth > 0) {
     const goal = 3000;
     const months = Math.ceil(goal / svMonth);
     tips.push(`À ce rythme tu atteins <strong>${goal} €</strong> (épargne de précaution 2 mois) en <strong>${months} mois</strong>.`);
   }
   tips.push(`Pense à <strong>l'épargne automatique</strong> : virement programmé le jour du salaire → hors de vue, hors d'atteinte.`);
-
   document.getElementById('tip-box').innerHTML = tips.join('<br><br>');
 }
 
-// ── Fuel slider ────────────────────────────────────────────────────────────
 function onFuelSlider(v) {
   state.fuelSpent = parseFloat(v);
   document.getElementById('fuel-slider-val').textContent = v + ' €';
@@ -842,7 +627,6 @@ function onFuelSlider(v) {
   compute();
 }
 
-// ── Savings pills ──────────────────────────────────────────────────────────
 function selectSavings(pct, recompute = true) {
   state.savingsPct = pct;
   [15, 20, 30].forEach(p => {
@@ -852,17 +636,13 @@ function selectSavings(pct, recompute = true) {
   if (recompute) { save(); compute(); }
 }
 
-// ── Tab switching ──────────────────────────────────────────────────────────
 function switchTab(name, btn, fromNav = false) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.bottom-btn').forEach(t => t.classList.remove('active'));
-
   const section = document.getElementById('tab-' + name);
   if (section) section.classList.add('active');
   if (btn) btn.classList.add('active');
-
-  // Keep top tabs + bottom nav in sync
   const navBtn = document.getElementById('nav-' + name);
   if (navBtn) navBtn.classList.add('active');
   const tabIdx = { overview: 0, inputs: 1, savings: 2 };
@@ -870,14 +650,12 @@ function switchTab(name, btn, fromNav = false) {
   if (tabs[tabIdx[name]]) tabs[tabIdx[name]].classList.add('active');
 }
 
-// ── Service Worker ─────────────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
 
-// ── Init ───────────────────────────────────────────────────────────────────
 load();
 compute();
 </script>
