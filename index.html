@@ -363,6 +363,7 @@
   </div>
 
   <div class="section active" id="tab-overview">
+
     <div class="card">
       <div class="card-title"><span>📊</span> Résumé mensuel</div>
       <div class="sum-row"><span class="label">Salaire</span><span class="amount green" id="ov-salaire">—</span></div>
@@ -387,6 +388,18 @@
       </div>
     </div>
 
+    <div class="card" id="card-solde" style="display:none">
+      <div class="card-title"><span>🏦</span> Situation réelle (mi-mois)</div>
+      <div class="sum-row"><span class="label">Solde en compte</span><span class="amount green" id="ov-solde">—</span></div>
+      <div class="sum-row"><span class="label">Charges restantes estimées</span><span class="amount red" id="ov-charges-left">—</span></div>
+      <div class="sum-total-bar"><span class="label">💡 Vrai reste à vivre</span><span class="amount" id="ov-real-reste">—</span></div>
+      <div style="height:12px"></div>
+      <div class="sum-row total"><span class="label">Budget réel / jour</span><span class="amount" id="ov-real-daily">—</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5">
+        Basé sur ton solde actuel moins les charges fixes pas encore déduites ce mois.
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title"><span>⛽</span> Jauge carburant</div>
       <div class="fuel-grid">
@@ -404,15 +417,32 @@
         <input type="range" id="fuelSlider" min="0" max="300" step="5" value="0" oninput="onFuelSlider(this.value)">
       </div>
     </div>
+
   </div>
 
   <div class="section" id="tab-inputs">
+
+    <div class="card" style="border:2px solid var(--primary)">
+      <div class="card-title"><span>🏦</span> Mon solde actuel</div>
+      <div class="row">
+        <div>
+          <div class="row-label">Solde en compte aujourd'hui</div>
+          <div class="row-sub">Laisse à 0 si tu ne veux pas l'utiliser</div>
+        </div>
+        <div class="row-input-wrap">
+          <span class="currency">€</span>
+          <input type="number" id="i-solde" value="0" min="0" step="1" oninput="save();compute()">
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title"><span>💚</span> Revenus mensuels</div>
       <div class="row"><div><div class="row-label">Salaire net</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-salaire" value="1528" min="0" step="1" oninput="save();compute()"></div></div>
       <div class="row"><div><div class="row-label">Prime d'activité</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-prime" value="131" min="0" step="1" oninput="save();compute()"></div></div>
       <div class="row"><div><div class="row-label">Autre revenu</div><div class="row-sub">ex: freelance, aide…</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-other-in" value="0" min="0" step="1" oninput="save();compute()"></div></div>
     </div>
+
     <div class="card">
       <div class="card-title"><span>🔴</span> Dépenses fixes</div>
       <div class="row"><div><div class="row-label">Crédit auto</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-credit" value="293" min="0" step="1" oninput="save();compute()"></div></div>
@@ -420,11 +450,13 @@
       <div class="row"><div><div class="row-label">Loyer</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-loyer" value="0" min="0" step="1" oninput="save();compute()"></div></div>
       <div class="row"><div><div class="row-label">Autre charge fixe</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-other-out" value="0" min="0" step="1" oninput="save();compute()"></div></div>
     </div>
+
     <div class="card">
       <div class="card-title"><span>⛽</span> Budget carburant mensuel</div>
       <div class="row"><div><div class="row-label">Enveloppe carburant</div><div class="row-sub">Plein = ~50 € en moyenne</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-fuel-budget" value="100" min="0" step="5" oninput="save();compute()"></div></div>
       <div class="row"><div><div class="row-label">Coût d'un plein</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-fuel-fill" value="50" min="1" step="1" oninput="save();compute()"></div></div>
     </div>
+
   </div>
 
   <div class="section" id="tab-savings">
@@ -486,12 +518,12 @@ let state = {
   salaire: 1528, prime: 131, otherIn: 0,
   credit: 293, assurance: 107, loyer: 0, otherOut: 0,
   fuelBudget: 100, fuelFill: 50, fuelSpent: 0,
-  savingsPct: 20
+  savingsPct: 20, solde: 0
 };
 
 function save() {
   const s = { ...state };
-  ['salaire','prime','otherIn','credit','assurance','loyer','otherOut','fuelBudget','fuelFill'].forEach(k => {
+  ['salaire','prime','otherIn','credit','assurance','loyer','otherOut','fuelBudget','fuelFill','solde'].forEach(k => {
     const el = document.getElementById('i-' + k.replace(/([A-Z])/g, m => '-' + m.toLowerCase()));
     if (el) s[k] = parseFloat(el.value) || 0;
   });
@@ -508,7 +540,7 @@ function load() {
   } catch(e) {}
   const map = { salaire:'i-salaire', prime:'i-prime', otherIn:'i-other-in',
     credit:'i-credit', assurance:'i-assurance', loyer:'i-loyer', otherOut:'i-other-out',
-    fuelBudget:'i-fuel-budget', fuelFill:'i-fuel-fill' };
+    fuelBudget:'i-fuel-budget', fuelFill:'i-fuel-fill', solde:'i-solde' };
   Object.entries(map).forEach(([k, id]) => {
     const el = document.getElementById(id);
     if (el) el.value = state[k];
@@ -591,6 +623,20 @@ function compute() {
   set('sv-6m', fmt(svMonth * 6),  'green');
   set('sv-1y', fmt(svYear),       'green');
   set('sv-2y', fmt(svYear * 2),   'green');
+
+  const soldeCard = document.getElementById('card-solde');
+  if (state.solde > 0) {
+    soldeCard.style.display = 'block';
+    const chargesRestantes = dayOfMonth <= 5 ? fixedOut + state.fuelBudget - state.fuelSpent : Math.max(0, state.fuelBudget - state.fuelSpent);
+    const realReste = state.solde - chargesRestantes;
+    const realDaily = daysLeft > 0 ? realReste / daysLeft : 0;
+    set('ov-solde', fmt(state.solde), 'green');
+    set('ov-charges-left', fmt(chargesRestantes), 'red');
+    set('ov-real-reste', fmt(realReste), colorClass(realReste));
+    set('ov-real-daily', fmtDec(realDaily), colorClass(realDaily));
+  } else {
+    soldeCard.style.display = 'none';
+  }
 
   updateTip(reste, svMonth, svAfter, revenu);
 }
