@@ -378,25 +378,28 @@
     </div>
 
     <div class="card">
-      <div class="card-title"><span>📅</span> Budget journalier</div>
-      <div class="sum-row"><span class="label">Jours restants ce mois</span><span class="amount" id="ov-daysLeft">—</span></div>
-      <div class="sum-row"><span class="label">Budget / jour (mois complet)</span><span class="amount" id="ov-dailyFull">—</span></div>
+      <div class="card-title"><span>📅</span> Cycle de paie</div>
+      <div class="sum-row"><span class="label">Jours avant prochaine paie</span><span class="amount" id="ov-daysLeft">—</span></div>
+      <div class="sum-row"><span class="label">Budget / jour (cycle complet)</span><span class="amount" id="ov-dailyFull">—</span></div>
       <div class="sum-row total"><span class="label">Budget / jour (jours restants)</span><span class="amount" id="ov-dailyLeft">—</span></div>
       <div class="progress-wrap" style="margin-top:14px">
-        <div class="progress-label"><span>Mois écoulé</span><span id="ov-monthPct">—</span></div>
+        <div class="progress-label">
+          <span>Cycle écoulé</span>
+          <span id="ov-monthPct">—</span>
+        </div>
         <div class="progress-bar"><div class="progress-fill" id="ov-monthBar" style="width:0%"></div></div>
       </div>
     </div>
 
     <div class="card" id="card-solde" style="display:none">
-      <div class="card-title"><span>🏦</span> Situation réelle (mi-mois)</div>
+      <div class="card-title"><span>🏦</span> Situation réelle</div>
       <div class="sum-row"><span class="label">Solde en compte</span><span class="amount green" id="ov-solde">—</span></div>
       <div class="sum-row"><span class="label">Charges restantes estimées</span><span class="amount red" id="ov-charges-left">—</span></div>
       <div class="sum-total-bar"><span class="label">💡 Vrai reste à vivre</span><span class="amount" id="ov-real-reste">—</span></div>
       <div style="height:12px"></div>
       <div class="sum-row total"><span class="label">Budget réel / jour</span><span class="amount" id="ov-real-daily">—</span></div>
       <div style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5">
-        Basé sur ton solde actuel moins les charges fixes pas encore déduites ce mois.
+        Basé sur ton solde actuel moins les charges pas encore déduites depuis ta paie.
       </div>
     </div>
 
@@ -413,7 +416,7 @@
         <div class="progress-bar"><div class="progress-fill" id="fuel-bar" style="width:0%"></div></div>
       </div>
       <div class="slider-wrap">
-        <div class="slider-label"><span>Carburant dépensé ce mois</span><span id="fuel-slider-val">0 €</span></div>
+        <div class="slider-label"><span>Carburant dépensé ce cycle</span><span id="fuel-slider-val">0 €</span></div>
         <input type="range" id="fuelSlider" min="0" max="300" step="5" value="0" oninput="onFuelSlider(this.value)">
       </div>
     </div>
@@ -423,7 +426,7 @@
   <div class="section" id="tab-inputs">
 
     <div class="card" style="border:2px solid var(--primary)">
-      <div class="card-title"><span>🏦</span> Mon solde actuel</div>
+      <div class="card-title"><span>🏦</span> Situation actuelle</div>
       <div class="row">
         <div>
           <div class="row-label">Solde en compte aujourd'hui</div>
@@ -434,13 +437,22 @@
           <input type="number" id="i-solde" value="0" min="0" step="1" oninput="save();compute()">
         </div>
       </div>
+      <div class="row">
+        <div>
+          <div class="row-label">Jour de paie</div>
+          <div class="row-sub">Police Nationale → 27</div>
+        </div>
+        <div class="row-input-wrap">
+          <input type="number" id="i-pay-day" value="27" min="1" max="31" step="1" oninput="save();compute()" style="width:60px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px;font-weight:600;padding:7px 10px;text-align:right;">
+        </div>
+      </div>
     </div>
 
     <div class="card">
       <div class="card-title"><span>💚</span> Revenus mensuels</div>
       <div class="row"><div><div class="row-label">Salaire net</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-salaire" value="1528" min="0" step="1" oninput="save();compute()"></div></div>
       <div class="row"><div><div class="row-label">Prime d'activité</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-prime" value="131" min="0" step="1" oninput="save();compute()"></div></div>
-      <div class="row"><div><div class="row-label">Autre revenu</div><div class="row-sub">ex: freelance, aide…</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-other-in" value="0" min="0" step="1" oninput="save();compute()"></div></div>
+      <div class="row"><div><div class="row-label">Autre revenu</div><div class="row-sub">ex: indemnités, aide…</div></div><div class="row-input-wrap"><span class="currency">€</span><input type="number" id="i-other-in" value="0" min="0" step="1" oninput="save();compute()"></div></div>
     </div>
 
     <div class="card">
@@ -518,12 +530,12 @@ let state = {
   salaire: 1528, prime: 131, otherIn: 0,
   credit: 293, assurance: 107, loyer: 0, otherOut: 0,
   fuelBudget: 100, fuelFill: 50, fuelSpent: 0,
-  savingsPct: 20, solde: 0
+  savingsPct: 20, solde: 0, payDay: 27
 };
 
 function save() {
   const s = { ...state };
-  ['salaire','prime','otherIn','credit','assurance','loyer','otherOut','fuelBudget','fuelFill','solde'].forEach(k => {
+  ['salaire','prime','otherIn','credit','assurance','loyer','otherOut','fuelBudget','fuelFill','solde','payDay'].forEach(k => {
     const el = document.getElementById('i-' + k.replace(/([A-Z])/g, m => '-' + m.toLowerCase()));
     if (el) s[k] = parseFloat(el.value) || 0;
   });
@@ -540,7 +552,7 @@ function load() {
   } catch(e) {}
   const map = { salaire:'i-salaire', prime:'i-prime', otherIn:'i-other-in',
     credit:'i-credit', assurance:'i-assurance', loyer:'i-loyer', otherOut:'i-other-out',
-    fuelBudget:'i-fuel-budget', fuelFill:'i-fuel-fill', solde:'i-solde' };
+    fuelBudget:'i-fuel-budget', fuelFill:'i-fuel-fill', solde:'i-solde', payDay:'i-pay-day' };
   Object.entries(map).forEach(([k, id]) => {
     const el = document.getElementById(id);
     if (el) el.value = state[k];
@@ -566,21 +578,40 @@ function compute() {
   const fixedOut = state.credit + state.assurance + state.loyer + state.otherOut;
   const charges  = fixedOut + state.fuelBudget;
   const reste    = revenu - charges;
-  const now      = new Date();
-  const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-  const dayOfMonth  = now.getDate();
-  const daysLeft    = daysInMonth - dayOfMonth + 1;
-  const monthPct    = Math.round((dayOfMonth / daysInMonth) * 100);
-  const dailyFull   = reste / daysInMonth;
-  const dailyLeft   = reste / daysLeft;
-  const fuelLeft   = state.fuelBudget - state.fuelSpent;
-  const fuelPct    = state.fuelBudget > 0 ? Math.min(100, Math.round((state.fuelSpent / state.fuelBudget) * 100)) : 0;
-  const fillsLeft  = state.fuelFill > 0 ? (fuelLeft / state.fuelFill).toFixed(1) : '—';
-  const svPct      = state.savingsPct / 100;
-  const svMonth    = revenu * svPct;
-  const svAfter    = reste - svMonth;
-  const svYear     = svMonth * 12;
-  const svDaily    = Math.max(0, svAfter) / daysInMonth;
+
+  const now        = new Date();
+  const today      = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dayOfMonth = today.getDate();
+  const payDay     = state.payDay || 27;
+
+  // Cycle de paie : du payDay au (payDay-1) du mois suivant
+  let periodStart, nextPayDate;
+  if (dayOfMonth >= payDay) {
+    periodStart = new Date(today.getFullYear(), today.getMonth(), payDay);
+    nextPayDate = new Date(today.getFullYear(), today.getMonth() + 1, payDay);
+  } else {
+    periodStart = new Date(today.getFullYear(), today.getMonth() - 1, payDay);
+    nextPayDate = new Date(today.getFullYear(), today.getMonth(), payDay);
+  }
+  const periodEnd    = new Date(nextPayDate.getFullYear(), nextPayDate.getMonth(), nextPayDate.getDate() - 1);
+  const msPerDay     = 86400000;
+  const daysInPeriod = Math.round((periodEnd - periodStart) / msPerDay) + 1;
+  const daysElapsed  = Math.round((today - periodStart) / msPerDay);
+  const daysLeft     = Math.round((periodEnd - today) / msPerDay) + 1;
+  const monthPct     = Math.round((daysElapsed / daysInPeriod) * 100);
+  const dailyFull    = reste / daysInPeriod;
+  const dailyLeft    = reste / daysLeft;
+  const nextPayStr   = nextPayDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+
+  const fuelLeft  = state.fuelBudget - state.fuelSpent;
+  const fuelPct   = state.fuelBudget > 0 ? Math.min(100, Math.round((state.fuelSpent / state.fuelBudget) * 100)) : 0;
+  const fillsLeft = state.fuelFill > 0 ? (fuelLeft / state.fuelFill).toFixed(1) : '—';
+
+  const svPct   = state.savingsPct / 100;
+  const svMonth = revenu * svPct;
+  const svAfter = reste - svMonth;
+  const svYear  = svMonth * 12;
+  const svDaily = Math.max(0, svAfter) / daysInPeriod;
 
   const month = now.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
   document.getElementById('headerMonth').textContent = month.charAt(0).toUpperCase() + month.slice(1);
@@ -588,7 +619,7 @@ function compute() {
   set('hRevenu',  fmt(revenu),  colorClass(revenu));
   set('hCharges', fmt(charges), 'red');
   set('hDaily',   fmtDec(dailyLeft), colorClass(dailyLeft));
-  document.getElementById('hDailySub').textContent = daysLeft + ' jours restants';
+  document.getElementById('hDailySub').textContent = daysLeft + ' j. avant paie (' + nextPayStr + ')';
 
   set('ov-salaire',   fmt(state.salaire),   'green');
   set('ov-prime',     fmt(state.prime),     'green');
@@ -598,7 +629,7 @@ function compute() {
   set('ov-fuel',      fmt(state.fuelBudget),'red');
   set('ov-charges',   fmt(charges),          'red');
   set('ov-reste',     fmt(reste),            colorClass(reste));
-  setText('ov-daysLeft', daysLeft + ' / ' + daysInMonth);
+  setText('ov-daysLeft', daysLeft + ' j. (paie le ' + nextPayStr + ')');
   set('ov-dailyFull', fmtDec(dailyFull), colorClass(dailyFull));
   set('ov-dailyLeft', fmtDec(dailyLeft), colorClass(dailyLeft));
   setText('ov-monthPct', monthPct + ' %');
@@ -627,7 +658,8 @@ function compute() {
   const soldeCard = document.getElementById('card-solde');
   if (state.solde > 0) {
     soldeCard.style.display = 'block';
-    const chargesRestantes = dayOfMonth <= 5 ? fixedOut + state.fuelBudget - state.fuelSpent : Math.max(0, state.fuelBudget - state.fuelSpent);
+    // Charges restantes : si on est dans les 3 premiers jours du cycle, les fixes sont peut-être pas encore prélevées
+    const chargesRestantes = daysElapsed <= 3 ? fixedOut + state.fuelBudget - state.fuelSpent : Math.max(0, state.fuelBudget - state.fuelSpent);
     const realReste = state.solde - chargesRestantes;
     const realDaily = daysLeft > 0 ? realReste / daysLeft : 0;
     set('ov-solde', fmt(state.solde), 'green');
@@ -662,7 +694,7 @@ function updateTip(reste, svMonth, svAfter, revenu) {
     const months = Math.ceil(goal / svMonth);
     tips.push(`À ce rythme tu atteins <strong>${goal} €</strong> (épargne de précaution 2 mois) en <strong>${months} mois</strong>.`);
   }
-  tips.push(`Pense à <strong>l'épargne automatique</strong> : virement programmé le jour du salaire → hors de vue, hors d'atteinte.`);
+  tips.push(`Pense à <strong>l'épargne automatique</strong> : virement programmé le jour de la paie → hors de vue, hors d'atteinte.`);
   document.getElementById('tip-box').innerHTML = tips.join('<br><br>');
 }
 
