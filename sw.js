@@ -1,4 +1,4 @@
-const CACHE = 'budget-v1';
+const CACHE = 'budget-v3';
 const ASSETS = ['/Budget/', '/Budget/index.html', '/Budget/manifest.json'];
 
 self.addEventListener('install', e => {
